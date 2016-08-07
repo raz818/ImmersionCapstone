@@ -33,11 +33,11 @@ public class Characterfinal : MonoBehaviour
     protected LayerMask groundedCheckLayerMask = new LayerMask();
 
     protected int jumpCount = 0;
-    private Animator anim;                  // Reference to the player's animator component.
+    public Animator anim;                  // Reference to the player's animator component.
 
     void Awake()
     {
-        anim = GetComponent<Animator>();
+        
     }
 
     //the moment our character hits the ground we set the grounded to true 

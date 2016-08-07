@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour {
 	[Header("Player Health Values")]
 	[Range(0, 2)]
 	private int playerHealth = 2;
+    public bool alive;
 
 	[Tooltip("The time it takes for the player to regenerate back to full health after taking damage, in seconds.")]
 	[SerializeField]
@@ -21,6 +22,7 @@ public class PlayerManager : MonoBehaviour {
 	private bool isInvulnerable = false;
 	private float invulnerableTimer = 0f;
 
+    [SerializeField]
 	private SpriteRenderer playerSprite = null;
 
 	[Header("Control Lockout Values")]
@@ -41,7 +43,8 @@ public class PlayerManager : MonoBehaviour {
     void Awake()
     {
         controls = GetComponent<Characterfinal>();
-        playerSprite = GetComponent<SpriteRenderer>();
+        alive = true;
+        
     }
 	private void Update() {
 		if(playerHealth < 2 && playerHealth > 0) {
@@ -99,7 +102,11 @@ public class PlayerManager : MonoBehaviour {
 		} else if(other.tag == "Collectible") {
 			Destroy(other.gameObject);
 			HappinessManager.AddToHappiness(happinessGain);
-		}
+		} else if(other.tag == "Monster")
+        {
+            alive = false;
+            Time.timeScale = 0;
+        }
 	}
 
 	private void StartInvulnerabilityTime() {
@@ -126,5 +133,6 @@ public class PlayerManager : MonoBehaviour {
 	private void Death() {
 		monster.DeathMonsterMovement();
 	}
+
 
 }

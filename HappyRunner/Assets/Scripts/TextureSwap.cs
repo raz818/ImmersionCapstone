@@ -8,6 +8,7 @@ public class TextureSwap : MonoBehaviour {
     public Texture2D hardTexture;
     public Texture2D easyTexture;
     public Texture2D targetTexture;
+    public Animator anim;
 
     // Use this for initialization
     void Start () {
@@ -19,12 +20,14 @@ public class TextureSwap : MonoBehaviour {
         if (HappinessManager.isHard)
         {
             targetTexture = hardTexture;
+
         }
         else
         {
             targetTexture = easyTexture;
         }
         SwapTexture(targetTexture);
+        anim.SetBool("IsHard", HappinessManager.isHard);
         MusicSwitcher.SongSwitch(HappinessManager.isHard);
 	}
 

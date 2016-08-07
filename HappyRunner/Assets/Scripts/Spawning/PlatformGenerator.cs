@@ -7,6 +7,8 @@ public class PlatformGenerator : MonoBehaviour {
     public float delay = 2f;
     public bool active = true;
     public Vector2 delayRange = new Vector2(1, 2);
+    public delegate void SpawnDelegate(InstantVelocity objectVelocity);
+    public event SpawnDelegate OnSpawn;
 
     // private float platformWidth;
     private int platformSelector;
@@ -30,8 +32,12 @@ public class PlatformGenerator : MonoBehaviour {
         {
             platformSelector = Random.Range(0, platforms.Length);
 
-            Instantiate(platforms[platformSelector], transform.position, transform.rotation);
-           
+            GameObject newPlatform = (GameObject)Instantiate(platforms[platformSelector], transform.position, transform.rotation);
+            if (OnSpawn != null)
+            {
+                OnSpawn(newPlatform.GetComponent<InstantVelocity>());
+            }
+
             ResetDelay();
         }
         StartCoroutine(EnemyGenerator());
