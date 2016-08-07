@@ -24,6 +24,10 @@ public class PlayerManager : MonoBehaviour {
 
     [SerializeField]
 	private SpriteRenderer playerSprite = null;
+    [SerializeField]
+    private Animator anim;
+    public AudioSource hit;
+    
 
 	[Header("Control Lockout Values")]
 	private float controlLockoutTime = .5f;
@@ -73,21 +77,10 @@ public class PlayerManager : MonoBehaviour {
 				EndControlLockout();
 			}
 		}
-		if (Input.GetButtonDown("Fire1")) {
-			Test();
-		}
+		
 	}
 
-	private void Test() {
-		playerHealth--;
-		playerHealth = Mathf.Clamp(playerHealth, 0, 2);
-		if (playerHealth <= 0) {
-			Death();
-			return;
-		}
-		StartControlLockout();
-		StartInvulnerabilityTime();
-	}
+	
 
 	private void OnTriggerEnter2D(Collider2D other) {
 		if(other.tag == "Obstacle" && !isInvulnerable) {
@@ -99,6 +92,8 @@ public class PlayerManager : MonoBehaviour {
 			}
 			StartControlLockout();
 			StartInvulnerabilityTime();
+            hit.Play();
+            
 		} else if(other.tag == "Collectible") {
 			Destroy(other.gameObject);
 			HappinessManager.AddToHappiness(happinessGain);
@@ -111,14 +106,16 @@ public class PlayerManager : MonoBehaviour {
 
 	private void StartInvulnerabilityTime() {
 		isInvulnerable = true;
-	}
+        anim.SetBool("IsHit", true);
+    }
 
 	public void EndInvulnerability() {
 		isInvulnerable = false;
 		playerSprite.color = new Vector4(playerSprite.color.r, playerSprite.color.g, playerSprite.color.b, 1);
         invulnerableTimer = 0f;
 		flickerTimer = 0f;
-	}
+        anim.SetBool("IsHit", false);
+    }
 
 	private void StartControlLockout() {
 		isLockedOut = true;

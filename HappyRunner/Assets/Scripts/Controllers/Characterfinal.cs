@@ -15,6 +15,7 @@ public class Characterfinal : MonoBehaviour
     public bool gamestarted = false;
     private bool isJumping = false;
     private bool grounded = false;
+    public AudioSource jump;
 
     [SerializeField]
     protected Rigidbody2D body = null;
@@ -83,15 +84,11 @@ public class Characterfinal : MonoBehaviour
         //Jump function on jump button press
         if (Input.GetButtonDown("Jump"))
         {
-            if (grounded && gamestarted)
+            if (grounded )
             {
                 Jump();
             }
-            else
-            {
-                gamestarted = true;
-                anim.SetTrigger("Start");
-            }
+            
         }
 
         
@@ -142,6 +139,7 @@ public class Characterfinal : MonoBehaviour
 
         //this.transform.Translate(Vector3.up * jumpVertForce * Time.deltaTime);
         body.AddForce(new Vector2(0f, jumpVertForce));
+        jump.Play();
         anim.SetTrigger("Jump");
     }
 

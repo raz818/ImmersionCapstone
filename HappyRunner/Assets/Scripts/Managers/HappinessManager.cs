@@ -20,6 +20,10 @@ public class HappinessManager : MonoBehaviour {
 	private static float totalHappiness = 100f;
 	private float timer = 0f;
 	static public bool isHard = false;
+    void Start()
+    {
+        ResetHappiness();
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -43,6 +47,11 @@ public class HappinessManager : MonoBehaviour {
 		totalHappiness += value;
 		totalHappiness = Mathf.Clamp(totalHappiness, 0, 100f);
 	}
+
+    static public void ResetHappiness()
+    {
+        totalHappiness = 100f;
+    }
 
 	
 }

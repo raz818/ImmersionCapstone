@@ -26,4 +26,6 @@ public class MusicSwitcher : MonoBehaviour {
 			evilSong.volume = 0f;
 		}
 	}
+
+
 }

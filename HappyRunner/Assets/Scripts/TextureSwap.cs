@@ -5,9 +5,13 @@ public class TextureSwap : MonoBehaviour {
 
     public Renderer[] renderers;
     //public bool IsSad = false;
-    public Texture2D hardTexture;
-    public Texture2D easyTexture;
-    public Texture2D targetTexture;
+    public Texture2D hardTextureGround;
+    public Texture2D easyTextureGround;
+    public Texture2D hardTextureSky;
+    public Texture2D easyTextureSky;
+    public Texture2D targetTextureGround;
+    public Texture2D targetTextureSky;
+
     public Animator anim;
 
     // Use this for initialization
@@ -19,26 +23,38 @@ public class TextureSwap : MonoBehaviour {
 	void Update () {
         if (HappinessManager.isHard)
         {
-            targetTexture = hardTexture;
-
+            targetTextureGround = hardTextureGround;
+            targetTextureSky = hardTextureSky;
         }
         else
         {
-            targetTexture = easyTexture;
+            targetTextureGround = easyTextureGround;
+            targetTextureSky = easyTextureSky;
         }
-        SwapTexture(targetTexture);
+        SwapTexture(targetTextureGround, targetTextureSky);
         anim.SetBool("IsHard", HappinessManager.isHard);
         MusicSwitcher.SongSwitch(HappinessManager.isHard);
 	}
 
-    public void SwapTexture(Texture2D texture)
+    public void SwapTexture(Texture2D textureGround, Texture2D textureSky)
     {
         foreach(var renderer in renderers)
         {
-            if (renderer.material.mainTexture == texture)
+            if (renderer.material.mainTexture == textureGround || renderer.material.mainTexture == textureSky)
                 return;
             else
-                renderer.material.mainTexture = texture;
+            {
+                if(renderer.gameObject.tag == "Sky")
+                {
+                    renderer.material.mainTexture = textureSky;
+                }
+                else
+                {
+                    renderer.material.mainTexture = textureGround;
+                }
+                
+            }
+                
         }
     }
 }

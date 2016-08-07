@@ -4,6 +4,9 @@ using System.Collections;
 public class PlatformGenerator : MonoBehaviour {
 
     public GameObject[] platforms;
+    public GameObject happyPrefab;
+    public GameObject hellPrefab;
+    private GameObject targetPrefab = null;
     public float delay = 2f;
     public bool active = true;
     public Vector2 delayRange = new Vector2(1, 2);
@@ -11,13 +14,18 @@ public class PlatformGenerator : MonoBehaviour {
     public event SpawnDelegate OnSpawn;
 
     // private float platformWidth;
-    private int platformSelector;
-   // private float[] platformWidths;
+    private int platformSelector = 0;
+    // private float[] platformWidths;
 
     // Use this for initialization
-	
-	// Update is called once per frame
-	void Start () {
+
+    [SerializeField]
+    private bool affectedByHard = true;
+    [SerializeField]
+    private float hardModeSpeedMultiplier;
+
+    // Update is called once per frame
+    void Start () {
 
         ResetDelay();
         StartCoroutine(EnemyGenerator());
@@ -30,9 +38,17 @@ public class PlatformGenerator : MonoBehaviour {
 
         if (active)
         {
-            platformSelector = Random.Range(0, platforms.Length);
+            if (HappinessManager.isHard)
+            {
+                targetPrefab = hellPrefab;
+            }
+            else
+            {
+               targetPrefab = happyPrefab;
+            }
+            
 
-            GameObject newPlatform = (GameObject)Instantiate(platforms[platformSelector], transform.position, transform.rotation);
+            GameObject newPlatform = (GameObject)Instantiate(targetPrefab, transform.position, transform.rotation);
             if (OnSpawn != null)
             {
                 OnSpawn(newPlatform.GetComponent<InstantVelocity>());
@@ -46,5 +62,9 @@ public class PlatformGenerator : MonoBehaviour {
     void ResetDelay()
     {
         delay = Random.Range(delayRange.x, delayRange.y);
+        if (HappinessManager.isHard && affectedByHard)
+        {
+            delay *= hardModeSpeedMultiplier;
+        }
     }
 }

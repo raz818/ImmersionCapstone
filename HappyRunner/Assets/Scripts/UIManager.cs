@@ -6,6 +6,8 @@ public class UIManager : MonoBehaviour {
 
 	GameObject[] finishObjects;
 	public GameObject player;
+    public GameObject MusicPlayer;
+    public AudioSource audio;
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +39,10 @@ public class UIManager : MonoBehaviour {
 	public void showFinished(){
 		foreach(GameObject g in finishObjects){
 			g.SetActive(true);
+            MusicPlayer.SetActive(false);
+
+
+            
 		}
 	}
 
