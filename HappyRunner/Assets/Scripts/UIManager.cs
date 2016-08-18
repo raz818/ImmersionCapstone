@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void Update(){
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
 		//shows finish gameobjects if player is dead and timescale = 0
 		if (Time.timeScale == 0 && player.GetComponent<PlayerManager>().alive == false){
 			showFinished();
@@ -28,6 +33,11 @@ public class UIManager : MonoBehaviour {
 		//Application.LoadLevel(Application.loadedLevel);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 
 	//loads inputted level
 	public void LoadLevel(string level){
